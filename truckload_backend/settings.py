@@ -45,9 +45,7 @@ INSTALLED_APPS = [
     'corsheaders'
 
 ]
-CORS_ALLOWED_ORIGINS = [
-    '*'
-]
+CORS_ALLOWED_ORIGINS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
 
 MIDDLEWARE = [
@@ -140,11 +138,13 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# Extra directories for static files (if needed)
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+import os
+
+# At the end of file. add these lines
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+MEDIA_URLS ='/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
