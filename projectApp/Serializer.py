@@ -1,14 +1,30 @@
 # serializers.py
 from rest_framework import serializers
-from .models import User, Driver, Trip
+from .models import Driver, Trip
 from .models import Truck
+from django.contrib.auth import get_user_model  # Import the custom user model
 
+User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'password']
+        fields = ['id', 'email', 'first_name', 'last_name', 'password']
+        extra_kwargs = {'password': {'write_only': True}}
 
+    def create(self, validated_data):
+        user = User.objects.create_user(email=validated_data['email'],
+                                        password=validated_data['password'],
+                                        first_name=validated_data.get('first_name', ''),
+                                        last_name=validated_data.get('last_name', ''))
+        return user
+
+
+# class UserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ['email', 'password']
+#
 
 class DriverSerializer(serializers.ModelSerializer):
     class Meta:

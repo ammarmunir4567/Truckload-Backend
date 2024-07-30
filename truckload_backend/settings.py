@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'corsheaders'
 
 ]
-CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
+#CORS_ALLOWED_ORIGINS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
 
 MIDDLEWARE = [
@@ -150,3 +150,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+AUTH_USER_MODEL = 'projectApp.CustomUser'
+

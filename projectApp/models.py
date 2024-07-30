@@ -1,10 +1,23 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+class CustomUser(AbstractUser):
+    username = None  # Remove username field
+    email = models.EmailField(_('email address'), unique=True)  # Make email unique and the identifier
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []  # remove 'email' from REQUIRED_FIELDS as it's now the USERNAME_FIELD
+
+    def __str__(self):
+        return self.email
 
 
-# Create your models here.
-class User(models.Model):
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=100)
+
+# # Create your models here.
+# class User(models.Model):
+#     email = models.EmailField(unique=True)
+#     password = models.CharField(max_length=100)
 
 
 class Truck(models.Model):
