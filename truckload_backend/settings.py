@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-)q0pzp1n!xhqe3*dw#$8arof*8m^igg&=h6z7t-%_+ad(m@igw"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'corsheaders'
 
 ]
-CORS_ALLOWED_ORIGINS = ['*']
+#CORS_ALLOWED_ORIGINS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
 
 MIDDLEWARE = [
@@ -150,3 +150,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+AUTH_USER_MODEL = 'projectApp.CustomUser'
+
