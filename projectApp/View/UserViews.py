@@ -29,7 +29,6 @@ class LoginView(generics.GenericAPIView):
         return Response(tokens, status=status.HTTP_200_OK)
 
 
-
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
 

@@ -1,4 +1,5 @@
 # UserViews.py
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,6 +10,7 @@ from projectApp.models import Truck
 
 
 class TruckListCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         trucks = Truck.objects.all()
         serializer = TruckSerializer(trucks, many=True)
@@ -22,6 +24,7 @@ class TruckListCreateAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TruckRetrieveUpdateDestroyAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, pk):
         truck = get_object_or_404(Truck, pk=pk)
         serializer = TruckSerializer(truck)
