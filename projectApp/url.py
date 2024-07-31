@@ -5,7 +5,7 @@ from projectApp.View.DriverView import DriverListCreateAPIView, DriverRetrieveUp
 from projectApp.View.TruckView import TruckListCreateAPIView, TruckRetrieveUpdateDestroyAPIView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from projectApp.View.UserViews import RegisterView, LoginView
+from projectApp.View.UserViews import RegisterView, LoginView, ChangePasswordView
 
 urlpatterns = [
 
@@ -14,6 +14,7 @@ urlpatterns = [
 
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
+    path('change-password/', ChangePasswordView.as_view(), name='change-password'),
 
     path('trucks/', TruckListCreateAPIView.as_view(), name='truck-list-create'),
     path('trucks/<int:pk>/', TruckRetrieveUpdateDestroyAPIView.as_view(), name='truck-detail'),
