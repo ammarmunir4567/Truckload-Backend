@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from projectApp.Serializer import UserSerializer
+from projectApp.Serialzier.UserSerializer import UserSerializer
 from projectApp.models import CustomUser
 
 

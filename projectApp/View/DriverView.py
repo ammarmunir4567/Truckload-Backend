@@ -2,8 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from projectApp.models import Truck, Driver
-from projectApp.Serializer import TruckSerializer, DriverSerializer
+from projectApp.Serialzier.DriverSerializer import DriverSerializer
+from projectApp.models import Driver
+
 
 
 class DriverListCreateAPIView(APIView):

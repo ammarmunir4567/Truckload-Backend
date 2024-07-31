@@ -1,31 +1,21 @@
-
-
-# myapp/views.py
-from rest_framework import status, generics
-from rest_framework.response import Response
-from django.contrib.auth import authenticate
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from django.contrib.auth.models import User
-
-from projectApp.Serializer import RegisterSerializer, LoginSerializer, ChangePasswordSerializer
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.contrib.auth.models import update_last_login
+from rest_framework.permissions import IsAuthenticated
+from projectApp.Serialzier.UserSerializer import RegisterSerializer, LoginSerializer, ChangePasswordSerializer
 from django.contrib.auth import get_user_model
 
-
-# class RegisterView(generics.CreateAPIView):
-#     queryset = User.objects.all()
-#     permission_classes = (AllowAny,)
-#     serializer_class = RegisterSerializer
-# projectApp/View/UserViews.py
-
-
-
 User = get_user_model()
+
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+
 
 class LoginView(generics.GenericAPIView):
     permission_classes = (AllowAny,)
@@ -37,15 +27,6 @@ class LoginView(generics.GenericAPIView):
         user = serializer.validated_data['user']
         tokens = serializer.get_tokens(user)
         return Response(tokens, status=status.HTTP_200_OK)
-
-
-
-# views.py
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from django.contrib.auth.models import update_last_login
-from rest_framework.permissions import IsAuthenticated
 
 
 
