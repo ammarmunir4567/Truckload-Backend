@@ -22,13 +22,12 @@ class ChangePasswordSerializer(serializers.Serializer):
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email', 'password']
+        fields = ['username', 'password']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
         user = User.objects.create_user(
             username=validated_data['username'],
-            email=validated_data['email'],
             password=validated_data['password']
         )
         return user
@@ -61,3 +60,42 @@ class LoginSerializer(serializers.Serializer):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         }
+
+
+
+# serializers.py
+from django.core.exceptions import ValidationError
+from django.contrib.auth.password_validation import validate_password
+
+class UpdateUserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=False)
+    username = serializers.CharField(required=False)
+    password = serializers.CharField(write_only=True, required=False, validators=[validate_password])
+
+    class Meta:
+        model = User
+        fields = ['email', 'username', 'password']
+
+    def validate(self, data):
+        if 'email' in data:
+            email = data['email']
+            if User.objects.exclude(pk=self.instance.pk).filter(email=email).exists():
+                raise serializers.ValidationError({"email": "This email is already in use."})
+
+        if 'username' in data:
+            username = data['username']
+            if User.objects.exclude(pk=self.instance.pk).filter(username=username).exists():
+                raise serializers.ValidationError({"username": "This username is already taken."})
+
+        return data
+
+    def update(self, instance, validated_data):
+        instance.email = validated_data.get('email', instance.email)
+        instance.username = validated_data.get('username', instance.username)
+
+        password = validated_data.get('password')
+        if password:
+            instance.set_password(password)
+
+        instance.save()
+        return instance

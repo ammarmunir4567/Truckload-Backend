@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# myapp/models.py
-from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
     ROLES = (
@@ -14,16 +12,12 @@ class CustomUser(AbstractUser):
 
 
 
-# Create your models here.
-# class User(models.Model):
-#     email = models.EmailField(unique=True)
-#     password = models.CharField(max_length=100)
-
-
 class Truck(models.Model):
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
-    year = models.PositiveIntegerField()
+    year = models.PositiveIntegerField(null=True, blank=True)
+    token_price=models.IntegerField(null=True, blank=True)
+    region_permit=models.CharField(max_length=100)
     license_plate = models.CharField(max_length=20, unique=True)
     status = models.CharField(max_length=20, choices=[
         ('Active', 'Active'),
@@ -41,6 +35,7 @@ class Driver(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     license_number = models.CharField(max_length=30, unique=True)
+    license_expiry=models.DateField(null=True, blank=True)
     phone_number = models.CharField(max_length=15)
     address = models.TextField()
     hire_date = models.DateField()

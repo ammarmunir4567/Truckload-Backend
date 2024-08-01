@@ -7,9 +7,9 @@ from projectApp.Serialzier.DriverSerializer import DriverSerializer
 from projectApp.models import Driver
 
 
-
 class DriverListCreateAPIView(APIView):
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         drivers = Driver.objects.all()
         serializer = DriverSerializer(drivers, many=True)
