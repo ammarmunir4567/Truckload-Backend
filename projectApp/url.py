@@ -28,7 +28,6 @@ urlpatterns = [
     path('trucks/<int:pk>/', TruckRetrieveUpdateDestroyAPIView.as_view(), name='truck-detail'),
     path('drivers/', DriverListCreateAPIView.as_view(), name='driver-list-create'),
     path('drivers/<int:pk>/', DriverRetrieveUpdateDestroyAPIView.as_view(), name='driver-detail'),
-
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
 
 ]

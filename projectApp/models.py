@@ -37,6 +37,7 @@ class Driver(models.Model):
     license_number = models.CharField(max_length=30, unique=True)
     license_expiry=models.DateField(null=True, blank=True)
     phone_number = models.CharField(max_length=15)
+    CNIC=models.CharField(max_length=100)
     address = models.TextField()
     hire_date = models.DateField()
     status = models.CharField(max_length=20, choices=[

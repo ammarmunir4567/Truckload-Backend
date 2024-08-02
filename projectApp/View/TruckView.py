@@ -11,6 +11,7 @@ from projectApp.models import Truck
 
 class TruckListCreateAPIView(APIView):
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         trucks = Truck.objects.all()
         serializer = TruckSerializer(trucks, many=True)
@@ -23,8 +24,10 @@ class TruckListCreateAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class TruckRetrieveUpdateDestroyAPIView(APIView):
     permission_classes = [IsAuthenticated]
+
     def get(self, request, pk):
         truck = get_object_or_404(Truck, pk=pk)
         serializer = TruckSerializer(truck)
