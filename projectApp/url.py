@@ -3,17 +3,25 @@ from django.urls import path
 
 
 from projectApp.View.DashboardView import DashboardView
+from projectApp.View.DestinationView import DestinationListCreateView, DestinationRetrieveUpdateDestroyView
 from projectApp.View.DriverView import DriverListCreateAPIView, DriverRetrieveUpdateDestroyAPIView
+from projectApp.View.TripView import TripDetailView, TripListView
 from projectApp.View.TruckView import TruckListCreateAPIView, TruckRetrieveUpdateDestroyAPIView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from projectApp.View.UserViews import RegisterView, LoginView, ChangePasswordView, LogoutView, UserListView, \
     UserDetailView, UpdateUserView
 
+
+
+
+
 urlpatterns = [
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+
 
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
@@ -29,5 +37,11 @@ urlpatterns = [
     path('drivers/', DriverListCreateAPIView.as_view(), name='driver-list-create'),
     path('drivers/<int:pk>/', DriverRetrieveUpdateDestroyAPIView.as_view(), name='driver-detail'),
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
+
+    path('destinations/', DestinationListCreateView.as_view(), name='destination-list-create'),
+    path('destinations/<int:pk>/', DestinationRetrieveUpdateDestroyView.as_view()),
+
+    path('trips/', TripListView.as_view(), name='trip-list'),
+    path('trips/<int:pk>/', TripDetailView.as_view(), name='trip-detail'),
 
 ]
