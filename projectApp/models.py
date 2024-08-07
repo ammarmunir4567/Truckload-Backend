@@ -35,7 +35,7 @@ class Driver(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     license_number = models.CharField(max_length=30, unique=True)
-    license_expiry = models.DateField(null=True, blank=True)
+    license_expiry = models.DateField()
     phone_number = models.CharField(max_length=15)
     CNIC = models.CharField(max_length=100)
     on_trip = models.BooleanField(default=False)
@@ -57,22 +57,19 @@ class Trip(models.Model):
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     start_date = models.DateField()
-    end_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField()
     total_km_driven = models.PositiveIntegerField(default=0)
     diesel_consumed = models.PositiveIntegerField(default=0)
-    diesel_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    diesel_price = models.DecimalField(max_digits=10, decimal_places=2)
     truck_avg = models.FloatField(default=0)
-    fare = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    fare = models.DecimalField(max_digits=10, decimal_places=2)
     other_repair_costs = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     remarks = models.TextField()
+    trip_status = models.BooleanField(default=False)
+    trip_money_spend=models.IntegerField(default=0)
+    trip_money_earned = models.IntegerField(default=0)
+    total_cash=models.IntegerField(default=0)
 
-    def calculate_total_cost(self):
-        return (self.total_km_driven * self.diesel_price) + self.other_repair_costs
 
-    def calculate_avg(self):
-        return (self.total_km_driven / self.diesel_consumed)
 
-    def save(self, *args, **kwargs):
-        if self.truck.needs_oil_change():
-            raise ValueError("Truck needs an oil change and cannot be assigned to a trip.")
-        super().save(*args, **kwargs)
+

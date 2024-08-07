@@ -5,7 +5,7 @@ from django.urls import path
 from projectApp.View.DashboardView import DashboardView
 from projectApp.View.DestinationView import DestinationListCreateView, DestinationRetrieveUpdateDestroyView
 from projectApp.View.DriverView import DriverListCreateAPIView, DriverRetrieveUpdateDestroyAPIView
-from projectApp.View.TripView import TripDetailView, TripListView
+from projectApp.View.TripView import TripDetailView, TripListView, TripTruck, TripDriver
 from projectApp.View.TruckView import TruckListCreateAPIView, TruckRetrieveUpdateDestroyAPIView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -43,5 +43,10 @@ urlpatterns = [
 
     path('trips/', TripListView.as_view(), name='trip-list'),
     path('trips/<int:pk>/', TripDetailView.as_view(), name='trip-detail'),
+
+    path('TripTruck/', TripTruck.as_view()),
+    path('TripDriver/', TripDriver.as_view()),
+
+
 
 ]
