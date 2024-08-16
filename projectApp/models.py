@@ -11,12 +11,17 @@ class CustomUser(AbstractUser):
     role = models.CharField(max_length=10, choices=ROLES, default='viewer')
 
 
+class Permit(models.Model):
+    region = models.CharField(max_length=100)
+    expiry_date = models.DateField()
+
+
 class Truck(models.Model):
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     year = models.PositiveIntegerField(null=True, blank=True)
     token_price = models.IntegerField(null=True, blank=True)
-    region_permit = models.CharField(max_length=100)
+    token_expiry_date = models.DateField(null=True, blank=True)
     license_plate = models.CharField(max_length=20, unique=True)
     on_trip = models.BooleanField(default=False)
     status = models.CharField(max_length=20, choices=[
@@ -26,6 +31,8 @@ class Truck(models.Model):
     ])
     last_oil_change_km = models.PositiveIntegerField(default=0)
     total_km_driven = models.PositiveIntegerField(default=0)
+    permits = models.ManyToManyField(Permit, related_name='trucks')
+    truck_maintenance_cost = models.IntegerField(default=0)
 
     def needs_oil_change(self):
         return self.total_km_driven - self.last_oil_change_km >= 300
@@ -57,19 +64,17 @@ class Trip(models.Model):
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     start_date = models.DateField()
-    end_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
     total_km_driven = models.PositiveIntegerField(default=0)
-    diesel_consumed = models.PositiveIntegerField(default=0)
-    diesel_price = models.DecimalField(max_digits=10, decimal_places=2)
+    diesel_consumed = models.FloatField(default=0)
+    diesel_price = models.FloatField(null=True, blank=True)
     truck_avg = models.FloatField(default=0)
-    fare = models.DecimalField(max_digits=10, decimal_places=2)
+    fare = models.DecimalField(null=True, blank=True,max_digits=10, decimal_places=2)
     other_repair_costs = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    remarks = models.TextField()
+    remarks = models.TextField(null=True, blank=True)
     trip_status = models.BooleanField(default=False)
-    trip_money_spend=models.IntegerField(default=0)
+    trip_money_spend = models.IntegerField(default=0)
     trip_money_earned = models.IntegerField(default=0)
-    total_cash=models.IntegerField(default=0)
-
-
-
-
+    total_cash = models.IntegerField(default=0)
+    trip_maintenance_cost = models.IntegerField(default=0)
+    daily_expenses = models.IntegerField(default=0)

@@ -35,8 +35,26 @@ class DriverRetrieveUpdateDestroyAPIView(APIView):
         serializer.save()
         return Response(serializer.data)
 
-
     def delete(self, request, pk):
         driver = get_object_or_404(Driver, pk=pk)
         driver.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+from datetime import datetime, timedelta
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from projectApp.models import Driver
+from projectApp.Serialzier.DriverSerializer import DriverSerializer
+
+
+class ExpiringLicensesAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        today = datetime.now().date()
+        three_months_from_now = today + timedelta(days=90)
+        drivers = Driver.objects.filter(license_expiry__lte=three_months_from_now)
+        serializer = DriverSerializer(drivers, many=True)
+        return Response(serializer.data)

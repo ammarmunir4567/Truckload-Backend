@@ -4,14 +4,16 @@ from rest_framework import status
 from django.http import Http404
 
 from projectApp.Serialzier.DriverSerializer import DriverSerializer
-from projectApp.Serialzier.TripSerializer import TripEndSerializer, TripCreateSerializer, TripSerializer
+from projectApp.Serialzier.TripSerializer import TripEndSerializer, TripCreateSerializer, TripSerializer, \
+    TripHistorySerializer
 from projectApp.Serialzier.TruckSerializer import TruckSerializer
 from projectApp.models import Trip, Driver, Truck
-
+from decimal import Decimal
 
 class TripListView(APIView):
     def get(self, request, format=None):
-        trips = Trip.objects.filter(trip_status=False)
+        trips = Trip.objects.filter(trip_status=True)
+
         serializer = TripSerializer(trips, many=True)
         return Response(serializer.data)
 
@@ -58,15 +60,22 @@ class TripDetailView(APIView):
                 trip.fare = trip_data['fare']
                 trip.other_repair_costs = trip_data['other_repair_costs']
                 trip.remarks = trip_data['remarks']
+                trip.daily_expenses = trip_data['daily_expenses']
+                trip.trip_maintenance_cost = trip_data['trip_maintenance_cost']
                 trip.trip_status = False
                 trip.driver.on_trip=False
                 trip.truck.on_trip=False
                 trip.driver.save()
                 trip.trip_money_earned = trip.fare * trip.total_km_driven
                 trip.truck_avg = trip.total_km_driven / trip.diesel_consumed
-                trip.trip_money_spend = (trip.total_km_driven * trip.diesel_price) + trip.other_repair_costs
+
+                trip.trip_money_spend = ((Decimal(trip.total_km_driven) * Decimal( trip.diesel_price)) + trip.other_repair_costs +
+                                         trip.trip_maintenance_cost)+trip.daily_expenses
+
+                #
                 trip.total_cash = trip.trip_money_earned - trip.trip_money_spend
                 if trip.truck:
+                    trip.truck.truck_maintenance_cost+= trip.trip_maintenance_cost
                     trip.truck.total_km_driven += trip.total_km_driven
                     trip.truck.save()
 
@@ -93,4 +102,11 @@ class TripTruck(APIView):
         truck = Truck.objects.all().filter(truck_status=False)
         serializer = TruckSerializer(truck, many=True)
         serializer.is_valid(raise_exception=True)
+        return Response(serializer.data)
+
+class TriphistoryListView(APIView):
+    def get(self, request, format=None):
+        trips = Trip.objects.filter(trip_status=False)
+
+        serializer = TripHistorySerializer(trips, many=True)
         return Response(serializer.data)
