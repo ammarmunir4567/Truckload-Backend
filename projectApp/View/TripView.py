@@ -47,7 +47,7 @@ class TripDetailView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request, pk, format=None):
+    def patch(self, request, pk):
         trip = self.get_object(pk)
         serializer = TripEndSerializer(trip, data=request.data, partial=True)
         if serializer.is_valid():
@@ -60,7 +60,7 @@ class TripDetailView(APIView):
                 trip.fare = trip_data['fare']
                 trip.other_repair_costs = trip_data['other_repair_costs']
                 trip.remarks = trip_data['remarks']
-                trip.daily_expenses = trip_data['daily_expenses']
+                trip.daily_expenses = ((trip.end_date - trip.start_date).days + 1 ) * trip_data['daily_expenses']
                 trip.trip_maintenance_cost = trip_data['trip_maintenance_cost']
                 trip.trip_status = False
                 trip.driver.on_trip=False
