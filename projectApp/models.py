@@ -35,7 +35,11 @@ class Truck(models.Model):
     truck_maintenance_cost = models.IntegerField(default=0)
 
     def needs_oil_change(self):
-        return self.total_km_driven - self.last_oil_change_km >= 300
+        km_since_last_change = self.total_km_driven - self.last_oil_change_km
+        if 2800 <= km_since_last_change <= 3200:
+            self.last_oil_change_km = km_since_last_change
+            return True
+        return False
 
 
 class Driver(models.Model):
@@ -69,7 +73,7 @@ class Trip(models.Model):
     diesel_consumed = models.FloatField(default=0)
     diesel_price = models.FloatField(null=True, blank=True)
     truck_avg = models.FloatField(default=0)
-    fare = models.DecimalField(null=True, blank=True,max_digits=10, decimal_places=2)
+    fare = models.DecimalField(null=True, blank=True, max_digits=10, decimal_places=2)
     other_repair_costs = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     remarks = models.TextField(null=True, blank=True)
     trip_status = models.BooleanField(default=False)

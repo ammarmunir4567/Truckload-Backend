@@ -43,3 +43,14 @@ class TruckPermitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Truck
         fields = ['make', 'model', 'license_plate', 'permits']
+
+
+
+
+
+class TruckOilChangeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Truck
+        fields = ['id', 'make', 'model', 'year', 'license_plate', 'total_km_driven', 'last_oil_change_km']
+
+

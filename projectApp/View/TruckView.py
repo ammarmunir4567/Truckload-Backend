@@ -1,7 +1,8 @@
+from django.db.models import F
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
-from projectApp.Serialzier.TruckSerializer import TruckSerializer, TruckPermitSerializer
+from projectApp.Serialzier.TruckSerializer import TruckSerializer, TruckPermitSerializer, TruckOilChangeSerializer
 
 
 class TruckListCreateAPIView(APIView):
@@ -65,3 +66,26 @@ class ExpiringPermitsView(APIView):
         ).distinct()
         serializer = TruckPermitSerializer(trucks, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+from rest_framework import generics
+
+
+# views.py
+
+from rest_framework import generics
+
+
+class TrucksNeedingOilChangeView(generics.ListAPIView):
+    serializer_class = TruckSerializer
+
+    def get_queryset(self):
+        return Truck.objects.filter(
+            total_km_driven__gte=F('last_oil_change_km') + 2800,
+            total_km_driven__lte=F('last_oil_change_km') + 3200,
+            on_trip=False
+        )
+
+
+
+

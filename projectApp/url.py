@@ -7,7 +7,8 @@ from projectApp.View.DestinationView import DestinationListCreateView, Destinati
 from projectApp.View.DriverView import DriverListCreateAPIView, DriverRetrieveUpdateDestroyAPIView, \
     ExpiringLicensesAPIView
 from projectApp.View.TripView import TripDetailView, TripListView, TripTruck, TripDriver, TriphistoryListView
-from projectApp.View.TruckView import TruckListCreateAPIView, TruckRetrieveUpdateDestroyAPIView, ExpiringPermitsView
+from projectApp.View.TruckView import TruckListCreateAPIView, TruckRetrieveUpdateDestroyAPIView, ExpiringPermitsView, \
+     TrucksNeedingOilChangeView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from projectApp.View.UserViews import RegisterView, LoginView, ChangePasswordView, LogoutView, UserListView, \
@@ -51,7 +52,8 @@ urlpatterns = [
 
     path('TripTruck/', TripTruck.as_view()),
     path('TripDriver/', TripDriver.as_view()),
-
+    
+    path('trucks/oil-change/', TrucksNeedingOilChangeView.as_view(), name='trucks-needing-oil-change'),
 
 
 ]
